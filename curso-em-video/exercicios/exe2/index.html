@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Verificador de idade</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Verificador de idade</h1>
+    </header>
+
+    <section>
+        <div>
+            <p>Ano de nascimento:
+                <input type="number" name="ano" id="ano" required>
+            </p>
+
+            <p>Sexo:
+                <input type="radio" name="sexo" id="masculino" required checked>
+                <label for="masculino">Masculino</label>
+
+                <input type="radio" name="sexo" id="feminino" required>
+                <label for="feminino">Feminino</label>
+            </p>
+
+            <div id="bt">
+                <input type="button" value="Verificar">
+            </div>
+        </div>
+
+        <div id="res">
+            <p>Preencha os dados acima para ver o resultado</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; José Guilherme Paro Monteiro Tomaine</p>
+    </footer>
+
+    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

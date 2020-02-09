@@ -1,0 +1,158 @@
+- inteiros e ponto flutuante (5 e 4.78)
+- Javascript considera como sendo tipo number
+
+***********************************************************************************************************
+
+- string
+
+3 tipos de aspas
+
+" "
+' '
+` ` - crase
+
+***********************************************************************************************************
+
+- Conversão string para número
+
+parseFloat(n) - converter string para parseFloat
+parseInt(n) - converter string para int
+Number(n) - converter para tipo número
+
+***********************************************************************************************************
+
+- Conversão número para string
+
+String(n) - 
+n.toString() - 
+
+***********************************************************************************************************
+
+- Formatação strings
+
+var s = 'Java'
+
+`Eu estou aprendendo ${s}`  //template string - usar entre crases
+
+${s}: placeholder
+
+- s.length                  //tamanho da string
+
+- s.toUpperCase()           //converter s para letra maiúsculas
+
+- s.toLowerCase()          //converter s para letra minúsculas
+
+***********************************************************************************************************
+
+- Formatar números
+
+n1.toFixed(qtd_casas_decimais)                    //formata colocando/tirando para ficar com a qtd casas decimais desejada
+
+n1.toFixed(qtd_casas_decimais).replace('.', ',')  //trocar ponto por virgula, por exemplo
+
+n1.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})
+
+***********************************************************************************************************
+
+- Operadores
+
+5 ** 2  //potência
+
+***********************************************************************************************************
+
+ - DOM (Document Object Model - Modelo de objetos para documentos)
+
+Conjunto de objetos dentro do navegador que vai dar acesso aos componentes internos do site
+
+***********************************************************************************************************
+
+ - Árvore DOM
+
+ Começa da raiz (window)
+
+                                                  window
+                                             /       |      \
+                                        location  document  history   (3 exemplos)
+                                                     |
+                                                    HTML
+                                                   /    \
+                                                 head   body
+                                                /  \       / | \
+                                              meta title  /  |  \
+                                                         /   |   \
+                                                        h1   p   div
+                                                             |
+                                                           strong
+
+- Selecionar elementos da Árvore
+
+- Por marca ( getElementsByTagName() )
+
+- ID ( getElementById() )
+
+- Nome ( getElementsByName ())
+
+- Classe ( getElementsByClassName() )
+
+- Seletor ( querySelector() e querySelectorAll() )
+
+***********************************************************************************************************
+
+- innerHTML: pega o texto com a formatação do HTML
+
+- innerText: pega somente o texto (sem formatação do HTML)
+
+***********************************************************************************************************
+
+Eventos DOM
+
+ - mouseenter: dispara quando mouse entrar dentro de determinado componente
+ - mousemove: continuar movento mouse dentro do elemento
+ - mousedown: clicar e segurar botão mouse
+ - mouseup: no momento em que se solta o botão do mouse
+ - click: apertar e soltar botão rapidamente
+ - mouseout: mover mouse pra fora do elemento
+
+ - addEventListener: escuta os eventos dos elementos HTML
+ addEventListener('click', clicar)
+
+***********************************************************************************************************
+
+var img = document.createElement('img') // criar elemento HTML
+
+n.appendChild(img): adicionar elemento img criado anteriormente via js
+
+***********************************************************************************************************
+
+- Váriaveis compostas
+
+variavel.push(num_a_ser_inserido)  //adiciona um elemento num array
+
+variavel.length                    //ver tamanho array
+
+variavel.sort()                    //ordenar elementos do array em ordem crescente
+
+variavel.indexOf(valor_tal)        //buscar valor num array
+
+for (let i in num) {               //para cada posição no vetor num (funciona somente para array)
+    console.log(num[i])
+}
+
+***********************************************************************************************************
+
+- Funções
+
+function soma(n1 = 0, n2 = 0) {  //colocar valor padrão para parametro caso ele não seja declarado na chamada da função
+    return n1 + n2
+}
+
+
+let a = function (x) {           //variavel recebendo funcao
+    return x*2
+}
+
+console.log(a(5));
+
+***********************************************************************************************************
+
+variavel.focus()                  colocar cursos sobre ele
