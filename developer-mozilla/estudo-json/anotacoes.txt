@@ -8,3 +8,11 @@ Obter o JSON
 Métodos HTTP usados para fazer a solicitação a rede:
 
 - GET: recupera dados
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Conversão de objetos em texto
+
+- parse(): Aceita uma string JSON como um parâmetro e retorna o objeto JavaScript correspondente.
+
+- stringify(): Aceita um objeto como um parâmetro e retorna o formato equivalente de string JSON.

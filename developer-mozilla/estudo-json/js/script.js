@@ -4,18 +4,17 @@ const section = document.querySelector('section');
 // armazenar a URL do JSON que será recuperada em uma variável
 var requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
 
-// Criação de solicitação a partir da criação de uma nova instância de objeto de solicitação a partir do construtor XMLHttpRequest
-var request = new XMLHttpRequest();
+var request = new XMLHttpRequest();  // Criação de solicitação a partir da criação de uma nova instância de objeto de solicitação a partir do construtor XMLHttpRequest
 
-// Abrir uma nova solicitação
-request.open('GET', requestURL);
+request.open('GET', requestURL);  // Abrir uma nova solicitação
 
 request.responseType = 'json';  //definicação do responseType e internamente deve ser convertido em objeto javascript
-request.send();  //envio da solicitação
+// request.responseType = 'text';  //pega string
+request.send();                 //envio da solicitação
 
-// resposta é executada quando o evento de carregamento é executado
+// requisição é executada quando o evento de carregamento é executado
 request.onload = function(){
-    var superHeroes = request.response;  //armazenando a resposta do pedido em superheroes, essa variável vai conter o objeto javascript com base json
+    var superHeroes = request.response;  //armazenando a resposta (string) do pedido em superheroes, essa variável vai conter o objeto javascript com base json
     populateHeader(superHeroes);         //objeto é passado para a função que preencherá o <header> com os dados corretos
     showHeroes(superHeroes);             //cria uma lista de informações para cada herói e a inserirá na <section>
 }
@@ -66,4 +65,14 @@ function showHeroes(){
     }
 }
 
-// Conversão de objetos em texto
+// Conversão de objetos javascript em string JSON
+let myJSON = {
+    "name": "José Guilherme",
+    "age": "23"
+};
+
+console.log(myJSON)
+
+let myString = JSON.stringify(myJSON)
+
+console.log(myString);
