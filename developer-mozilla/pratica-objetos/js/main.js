@@ -2,6 +2,7 @@
 // setup canvas
 
 const canvas = document.querySelector('canvas');
+
 // ctx representa a área de desenho em tela
 const ctx = canvas.getContext('2d');  //pega o contexto atual a ser usado em tela (2d)
 
@@ -35,35 +36,73 @@ class Ball {
     ctx.fill(); //termina de "desenhar" o que começou em beginPath() e preenche a área com a cor especificada acima
   }
 
-  // Atualizar o posicionamento da bola
+  // Atualizar o posicionamento da bola (movimentação)
   update() {
-    // Se bola alcançou a borda da tela
+    // Se bola alcançou a borda da tela, é invertido a polaridade da velocidade relevante para fazer a bola ir na direção oposta
+
+    // Verf se coord. x (centro da bola) é maior que largura da tela (bola está saindo da borda direita)
+    // size da bola é incluído no cálculo
     if((this.x + this.size) >= width) {
       this.velX = -(this.velX);
     }
-
+    
+    // Verf se coord. x (centro da bola) é menor que 0 (bola está saindo da borda esquerda)
+    // size da bola é incluído no cálculo
     if((this.x - this.size) <= 0) {
       this.velX = -(this.velX);
     }
     
+    // Verf se coord. y (centro da bola) é maior que a altura da tela (bola está saindo da borda inferior)
+    // size da bola é incluído no cálculo
     if((this.y + this.size) >= height) {
       this.vleY = -(this.vleY);
     }
-
+    
+    // Verf se coord. y (centro da bola) é menor que 0 (bola está saindo da borda superior)
+    // size da bola é incluído no cálculo
     if((this.y - this.size) <= 0) {
       this.vleY = -(this.vleY);
     }
 
+    // Adição da velocidade á varíavel correspondente
     this.x += this.velX;
     this.y += this.vleY;
   }
+  
 }
 
 let testeball = new Ball(50, 100, 4, 4, 'blue', 10);
 
-console.log(
-  testeball.x,
-  testeball.size,
-  testeball.color,
-  testeball.draw()
-);
+// Animar bola
+var balls = [];  //vetor para armazenas todas as bolas
+
+// Função loop de animação - atualizar as informações no programa e renderizar a visualização resultado em cada quadro da animação
+function loop(){
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';  //cor de preenchimento da tela
+  ctx.fillRect(0, 0, width, height);  //desenha retangulo da mesma cor na largura, altura da tela
+
+  // Valores aleatórios são gerados e adicionados no final do array de bolas (apenas quando tiver menos que 25 bolas)
+  // Quando há 25 bolas na tela, não aparecem mais
+  while(balls.length < 25) {
+    let size = random(10, 20);
+    let ball = new Ball(
+      // a posição da bola sempre é desenhada a pelo menos uma largura da borda da tela para evitar erros de desenho
+      random(0 + size,width - size),
+      random(0 + size,height - size),
+      random(-7,7),
+      random(-7,7),
+      'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
+      size
+    );
+    balls.push(ball);
+  }
+
+  // Percorre todo o array de bolas
+  for(let i = 0; i < balls.length; i++) {
+    balls[i].draw();    //desenha cada uma das bolas
+    balls[i].update();  //atualiza a posição e velocidade no tempo para o próximo quadro
+  }
+
+  // 
+  requestAnimationFrame(loop);
+}
