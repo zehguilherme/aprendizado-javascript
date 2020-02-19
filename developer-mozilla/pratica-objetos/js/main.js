@@ -10,7 +10,7 @@ const ctx = canvas.getContext('2d');  //pega o contexto atual a ser usado em tel
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-// function para gerar um número aleatório no intervalo entre os 2
+// função para gerar um número aleatório no intervalo entre os 2
 function random(min,max) {
   const num = Math.floor(Math.random()*(max-min)) + min;
   return num;
@@ -29,7 +29,7 @@ class Ball {
   }
   // Adição do método draw() ao protótipo de Ball
   draw() {
-    ctx.beginPath(); //desenhar uma forma
+    ctx.beginPath();            //desenhar uma forma
     ctx.fillStyle = this.color; //fillStyle: define a cor da forma
     //arc(): traçar o formato de um arco
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI, true); //parâmetros: posição x e y do centro do arco; raio do arco (size); 2 últimos: nº inicial e final de graus em volta do círculo em que o arco é desenhado ( 0º e 2 * PI(eq 360º) )
@@ -68,10 +68,27 @@ class Ball {
     this.x += this.velX;
     this.y += this.vleY;
   }
-  
-}
 
-let testeball = new Ball(50, 100, 4, 4, 'blue', 10);
+  // Detecção de colisão
+  collisionDetect() {
+    // Percorrer array de bolas
+    for(let j = 0; j < balls.length; j++) {
+      if(!(this === balls[j])) {  //verifica se a bola atual do loop não é a mesma que está sendo verificada no momento (collisionDetect())
+        // verifica se alguma das áreas dos 2 círculos se sobrepõem
+        let dx = this.x - balls[j].x;
+        let dy = this.y - balls[j].y;
+        let distance = Math(sqrt(dx * dx + dy * dy));
+
+        // se detectar colisão
+        if(distance < this.size + balls[j].size) {
+          // muda-se a cor de ambos os círculos para uma cor aleatória
+          balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) +')';
+        }
+      }
+    }
+  }
+
+}
 
 // Animar bola
 var balls = [];  //vetor para armazenas todas as bolas
@@ -83,7 +100,7 @@ function loop(){
 
   // Valores aleatórios são gerados e adicionados no final do array de bolas (apenas quando tiver menos que 25 bolas)
   // Quando há 25 bolas na tela, não aparecem mais
-  while(balls.length < 25) {
+  while(balls.length < 30) {
     let size = random(10, 20);
     let ball = new Ball(
       // a posição da bola sempre é desenhada a pelo menos uma largura da borda da tela para evitar erros de desenho
@@ -101,8 +118,11 @@ function loop(){
   for(let i = 0; i < balls.length; i++) {
     balls[i].draw();    //desenha cada uma das bolas
     balls[i].update();  //atualiza a posição e velocidade no tempo para o próximo quadro
+    balls[i].collisionDetect();  //detecção de colisão
   }
 
-  // 
+  // cria uma animação suave ao executar a função 'loop' um número determinado de vezes por segundo (recursivamente)
   requestAnimationFrame(loop);
 }
+
+console.log(loop());
