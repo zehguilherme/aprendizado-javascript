@@ -1,6 +1,10 @@
-# Aprendizados em JavaScript
+<h1 align="center">
+  Aprendizados em JavaScript
+</h1>
 
-Realização de cursos e outros aprendizados em JavaScript
+<p align="center">
+  Realização de cursos e outros aprendizados em JavaScript
+</p>
 
 ## Cursos realizados:
 
