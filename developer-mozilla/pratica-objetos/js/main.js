@@ -16,25 +16,34 @@ function random(min,max) {
   return num;
 }
 
-// Modelando uma bola
-// Construtor
-class Ball {
-  constructor(x, y, velX, vleY, color, size) {
+// Modelando a forma da bola
+class Shape {
+  constructor(x, y, velX, velY) {
     this.x = x;
     this.y = y;
-    this.velX = velX;
-    this.vleY = vleY;
-    this.color = color;
-    this.size = size; //raio em pixels
+    this.velX = velX;      //velocidade eixo X
+    this.velY = velY;      //velocidade eixo Y
+    this.exists = exists;  //rastreia se as bolas existem (se não foram eliminadas pela bola maligna)
   }
-  // Adição do método draw() ao protótipo de Ball
+};
+
+// Modelando a bola
+class Ball extends Shape {
+  constructor(x, y, velX, velY, exists, color, size) {
+    super(x, y, velX, velY, exists);
+
+    this.color = color;
+    this.size = size;      //raio em pixels
+  }
+
+  // Método para desenhar
   draw() {
     ctx.beginPath();            //desenhar uma forma
     ctx.fillStyle = this.color; //fillStyle: define a cor da forma
     //arc(): traçar o formato de um arco
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI, true); //parâmetros: posição x e y do centro do arco; raio do arco (size); 2 últimos: nº inicial e final de graus em volta do círculo em que o arco é desenhado ( 0º e 2 * PI(eq 360º) )
     ctx.fill(); //termina de "desenhar" o que começou em beginPath() e preenche a área com a cor especificada acima
-  }
+  };
 
   // Atualizar o posicionamento da bola (movimentação)
   update() {
@@ -55,19 +64,19 @@ class Ball {
     // Verf se coord. y (centro da bola) é maior que a altura da tela (bola está saindo da borda inferior)
     // size da bola é incluído no cálculo
     if((this.y + this.size) >= height) {
-      this.vleY = -(this.vleY);
+      this.velY = -(this.velY);
     }
     
     // Verf se coord. y (centro da bola) é menor que 0 (bola está saindo da borda superior)
     // size da bola é incluído no cálculo
     if((this.y - this.size) <= 0) {
-      this.vleY = -(this.vleY);
+      this.velY = -(this.velY);
     }
 
     // Adição da velocidade á varíavel correspondente
     this.x += this.velX;
-    this.y += this.vleY;
-  }
+    this.y += this.velY;
+  };
 
   // Detecção de colisão
   collisionDetect() {
@@ -75,9 +84,9 @@ class Ball {
     for(let j = 0; j < balls.length; j++) {
       if(!(this === balls[j])) {  //verifica se a bola atual do loop não é a mesma que está sendo verificada no momento (collisionDetect())
         // verifica se alguma das áreas dos 2 círculos se sobrepõem
-        let dx = this.x - balls[j].x;
-        let dy = this.y - balls[j].y;
-        let distance = Math(sqrt(dx * dx + dy * dy));
+        const dx = this.x - balls[j].x;
+        const dy = this.y - balls[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
         // se detectar colisão
         if(distance < this.size + balls[j].size) {
@@ -87,37 +96,98 @@ class Ball {
       }
     }
   }
+};
 
-}
+// Construção da bola maligna
+class EvilCircle extends Shape {
+  constructor(x, y, velX = 20, velY = 20, exists) {
+    super(x, y, velX, velY, exists);
+    
+    this.color = 'white';
+    this.size = 10;
+  }
+
+  draw() {
+    ctx.beginPath();              //desenhar uma forma
+    ctx.strokeStyle = this.color; //fillStyle: define apenas um traço externo com a cor
+    ctx.lineWidth(3);              //torna o traço um pouco mais espesso
+    //arc(): traçar o formato de um arco
+    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI, true); //parâmetros: posição x e y do centro do arco; raio do arco (size); 2 últimos: nº inicial e final de graus em volta do círculo em que o arco é desenhado ( 0º e 2 * PI(eq 360º) )
+    ctx.stroke(); //termina de "desenhar" o que começou em beginPath() e faz o traço com a cor especifica em strokeStyle acima
+  }
+
+  // Fará a mesma coisa que a primeira parte da função update() de Ball()
+  checkBounds() {
+    if((this.x + this.size) >= width) {
+      this.x = -(this.x);
+    }
+    
+    // Verf se coord. x (centro da bola) é menor que 0 (bola está saindo da borda esquerda)
+    // size da bola é incluído no cálculo
+    if((this.x - this.size) <= 0) {
+      this.x = -(this.x);
+    }
+    
+    // Verf se coord. y (centro da bola) é maior que a altura da tela (bola está saindo da borda inferior)
+    // size da bola é incluído no cálculo
+    if((this.y + this.size) >= height) {
+      this.y = -(this.y);
+    }
+    
+    // Verf se coord. y (centro da bola) é menor que 0 (bola está saindo da borda superior)
+    // size da bola é incluído no cálculo
+    if((this.y - this.size) <= 0) {
+      this.y = -(this.y);
+    }
+  }
+
+  // Adicionará um ouvinte de evento 'onkeydown' ao objeto 'window' para que quando determinadas teclas do teclado forem pressionadas, possamos mover o círculo maligno ao redor
+  setControls() {
+    let _this = this;
+
+    onkeydown = function(e) {
+      if(e.keyCode === 65) {
+        _this.x -= _this.velX;
+      } else if(e.keyCode === 68) {
+        _this.x += _this.velX;
+      } else if(e.keyCode === 87) {
+        _this.y -= _this.velY;
+      } else if(e.keyCode === 83) {
+        _this += _this.velY;
+      }
+    }
+  }
+};
 
 // Animar bola
-var balls = [];  //vetor para armazenas todas as bolas
+let balls = [];  //vetor para armazenar todas as bolas
+
+// Valores aleatórios são gerados e adicionados no final do array de bolas (apenas quando tiver menos que 25 bolas)
+// Quando há 25 bolas na tela, não aparecem mais
+while(balls.length < 25) {
+  const size = random(10, 20);
+  let ball = new Ball(
+    // a posição da bola sempre é desenhada a pelo menos uma largura da borda da tela para evitar erros de desenho
+    random(0 + size,width - size),
+    random(0 + size,height - size),
+    random(-7,7),
+    random(-7,7),
+    exists = true,
+    'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
+    size
+  );
+  balls.push(ball);
+}
 
 // Função loop de animação - atualizar as informações no programa e renderizar a visualização resultado em cada quadro da animação
 function loop(){
   ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';  //cor de preenchimento da tela
-  ctx.fillRect(0, 0, width, height);  //desenha retangulo da mesma cor na largura, altura da tela
-
-  // Valores aleatórios são gerados e adicionados no final do array de bolas (apenas quando tiver menos que 25 bolas)
-  // Quando há 25 bolas na tela, não aparecem mais
-  while(balls.length < 30) {
-    let size = random(10, 20);
-    let ball = new Ball(
-      // a posição da bola sempre é desenhada a pelo menos uma largura da borda da tela para evitar erros de desenho
-      random(0 + size,width - size),
-      random(0 + size,height - size),
-      random(-7,7),
-      random(-7,7),
-      'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
-      size
-    );
-    balls.push(ball);
-  }
+  ctx.fillRect(0, 0, width, height);      //desenha retangulo da mesma cor na largura, altura da tela
 
   // Percorre todo o array de bolas
   for(let i = 0; i < balls.length; i++) {
-    balls[i].draw();    //desenha cada uma das bolas
-    balls[i].update();  //atualiza a posição e velocidade no tempo para o próximo quadro
+    balls[i].draw();             //desenha cada uma das bolas
+    balls[i].update();           //atualiza a posição e velocidade no tempo para o próximo quadro
     balls[i].collisionDetect();  //detecção de colisão
   }
 
@@ -125,4 +195,4 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-console.log(loop());
+console.log(loop())
