@@ -19,7 +19,7 @@ function random(min, max) {
 
 // Modelando a forma da bola
 class Shape {
-  constructor(x, y, velX, velY) {
+  constructor(x, y, velX, velY, exists) {
     this.x = x;
     this.y = y;
     this.velX = velX; //velocidade eixo X
@@ -101,17 +101,18 @@ class Ball extends Shape {
 
 // Construção da bola maligna
 class EvilCircle extends Shape {
-  constructor(x, y, velX = 20, velY = 20, exists) {
-    super(x, y, velX, velY, exists);
+  constructor(x, y, exists) {
+    super(x, y, 20, 20, exists);
 
     this.color = 'white';
-    this.size = 10;
+    this.size = 20;
   }
 
+  // Desenha instância do objeto na tela
   draw() {
     ctx.beginPath(); //desenhar uma forma
+    ctx.lineWidth = 3; //torna o traço um pouco mais espesso
     ctx.strokeStyle = this.color; //fillStyle: define apenas um traço externo com a cor
-    ctx.lineWidth(3); //torna o traço um pouco mais espesso
     //arc(): traçar o formato de um arco
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI, true); //parâmetros: posição x e y do centro do arco; raio do arco (size); 2 últimos: nº inicial e final de graus em volta do círculo em que o arco é desenhado ( 0º e 2 * PI(eq 360º) )
     ctx.stroke(); //termina de "desenhar" o que começou em beginPath() e faz o traço com a cor especifica em strokeStyle acima
@@ -120,25 +121,25 @@ class EvilCircle extends Shape {
   // Fará a mesma coisa que a primeira parte da função update() de Ball()
   checkBounds() {
     if ((this.x + this.size) >= width) {
-      this.x = -(this.x);
+      this.x = -(this.size);
     }
 
     // Verf se coord. x (centro da bola) é menor que 0 (bola está saindo da borda esquerda)
     // size da bola é incluído no cálculo
     if ((this.x - this.size) <= 0) {
-      this.x = -(this.x);
+      this.x = -(this.size);
     }
 
     // Verf se coord. y (centro da bola) é maior que a altura da tela (bola está saindo da borda inferior)
     // size da bola é incluído no cálculo
     if ((this.y + this.size) >= height) {
-      this.y = -(this.y);
+      this.y = -(this.size);
     }
 
     // Verf se coord. y (centro da bola) é menor que 0 (bola está saindo da borda superior)
     // size da bola é incluído no cálculo
     if ((this.y - this.size) <= 0) {
-      this.y = -(this.y);
+      this.y = -(this.size);
     }
   }
 
@@ -149,32 +150,33 @@ class EvilCircle extends Shape {
     // 65, 68, 87, 83: códigos que representam determinadas teclas
     //assim que uma tecla é pressionada, a prop. keyCode é consultada pra ver qual tecla é
     onkeydown = function (e) {
-      if (e.keyCode === 65) { //tecla A
+      if (e.key == 'a' || e.key == 'A') { //tecla A
         _this.x -= _this.velX;
-      } else if (e.keyCode === 68) { //tecla D
+      } else if (e.key === 'd' || e.key === 'D') { //tecla D
         _this.x += _this.velX;
-      } else if (e.keyCode === 87) { //tecla W
+      } else if (e.key === 'w' || e.key === 'W') { //tecla W
         _this.y -= _this.velY;
-      } else if (e.keyCode === 83) { //tecla S
+      } else if (e.key === 's' || e.key === 'S') { //tecla S
         _this += _this.velY;
       }
     }
   }
+  
 
   // Irá agir de forma muito semelhante ao método collisionDetect() do Ball()
   collisionDetect() {
     // Percorrer array de bolas
     for (let j = 0; j < balls.length; j++) {
-      if ((this.exists == true)) { //verifica se a bola atual existe
+      if ((balls[j].exists)) { //verifica se a bola atual existe
         // verifica se alguma das áreas dos 2 círculos se sobrepõem
         const dx = this.x - balls[j].x;
         const dy = this.y - balls[j].y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // se detectar colisão
+        // se detectar colisão com a bola do mal
         if (distance < this.size + balls[j].size) {
-          // muda-se a cor de ambos os círculos para uma cor aleatória
-          balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')';
+          // bola atual é deletada
+          balls[j].exists = this.exists = false;
         }
       }
     }
@@ -182,51 +184,55 @@ class EvilCircle extends Shape {
 };
 
 // Animar bola
-let balls = []; //vetor para armazenar todas as bolas
+const balls = []; //vetor para armazenar todas as bolas
 
 // Valores aleatórios são gerados e adicionados no final do array de bolas (apenas quando tiver menos que 25 bolas)
 // Quando há 25 bolas na tela, não aparecem mais
 while (balls.length < 25) {
   const size = random(10, 20);
-  let ball = new Ball(
+  var ball = new Ball(
     // a posição da bola sempre é desenhada a pelo menos uma largura da borda da tela para evitar erros de desenho
     random(0 + size, width - size),
     random(0 + size, height - size),
     random(-7, 7),
     random(-7, 7),
-    exists = true,
+    true,
     'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')',
     size
   );
   balls.push(ball);
 }
 
+let evilcircle = new EvilCircle(
+random(0, width),
+random(0, height),
+true
+);
+
+evilcircle.setControls();
+
 // Função loop de animação - atualizar as informações no programa e renderizar a visualização resultado em cada quadro da animação
 function loop() {
-  let evilcircle = new EvilCircle(
-    random(0 + size, width - size),
-    random(0 + size, height - size),
-    exists = true
-  );
-
-  evilcircle.setControls();
-
   ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; //cor de preenchimento da tela
   ctx.fillRect(0, 0, width, height); //desenha retangulo da mesma cor na largura, altura da tela
 
   // Percorre todo o array de bolas
   for (let i = 0; i < balls.length; i++) {
     // Verifica se a bola atual existe
-    if (exists == true) {
+    if (balls[i].exists) {
       balls[i].draw(); //desenha cada uma das bolas
       balls[i].update(); //atualiza a posição e velocidade no tempo para o próximo quadro
       balls[i].collisionDetect(); //detecção de colisão
-      balls[i].checkBounds();
     }
   }
+
+  // bola do mal
+  evilcircle.draw();
+  evilcircle.checkBounds();
+  evilcircle.collisionDetect();
 
   // cria uma animação suave ao executar a função 'loop' um número determinado de vezes por segundo (recursivamente)
   requestAnimationFrame(loop);
 }
 
-console.log(loop())
+loop();
