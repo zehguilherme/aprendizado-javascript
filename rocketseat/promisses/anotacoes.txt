@@ -1,0 +1,1 @@
+Promisses: funções que retornam response de forma assíncrona
