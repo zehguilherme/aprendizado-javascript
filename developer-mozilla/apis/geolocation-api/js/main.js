@@ -1,12 +1,23 @@
+// Método assíncrono
 navigator.geolocation.getCurrentPosition(function(position) {
-    let latLong = new google.maps.LatLong(position.coords.latitude, position.coords.longitude)
+  let latLng = new google.maps.LatLng(
+    position.coords.latitude,
+    position.coords.longitude
+  ); //usa as coordenadas do dispositivo como parametros
 
-    let myOptions = {
-        zoom: 8,
-        center: latLong,
-        mapTypeId: google.maps.mapTypeId.TERRAIN,
-        disableDefaultUI: true
-    }
+  let mapOptions = {
+    zoom: 8,
+    center: latLng,
+    mapTypeId: "roadmap",
+    disableDefaultUI: true
+  };
 
-    let map = new google.maps.Map(document.querySelector('canvas#map_canvas'), myOptions)
-})
+  // coloca os dados da localização no mapa do Google (API Google Maps)
+  let map = new google.maps.Map(
+    document.querySelector("canvas#map_canvas"),
+    mapOptions
+  );
+});
+
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
