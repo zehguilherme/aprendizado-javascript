@@ -1,0 +1,12 @@
+h1,
+div#main {
+  text-align: center;
+}
+
+input#user {
+  width: 200px;
+}
+
+ul.list li {
+  list-style: none;
+}
