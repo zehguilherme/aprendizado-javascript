@@ -4,10 +4,21 @@ const github_username = document.querySelector("input#user"); //input
 const btAdd = document
   .querySelector("button.add")
   .addEventListener("click", () => {
+    let loadingElement = document.createElement("li");
+    loadingElement.textContent = "Carregando...";
+
+    let brElement = document.createElement("br");
+
+    document.querySelector("ul.list").appendChild(loadingElement); //coloca a linha "Carregando" na ul
+    document.querySelector("ul.list").before(brElement); //coloca um br antes da ul
+
     axios
       .get(`https://api.github.com/users/${github_username.value}/repos`)
 
       .then(response => {
+        document.querySelector("ul.list").removeChild(loadingElement);
+        document.querySelector("div.form").removeChild(brElement);
+
         // Verifica se está inserindo os mesmo repositórios mais de uma vez (mesmo usuário)
         // if (
         //   linkAttribute.value == response.data[i].html_url ||
@@ -21,10 +32,10 @@ const btAdd = document
         // }
 
         // Percorre o vetor com as informações sobre os repositórios vindo do response
-        for (var i = 0; i < response.data.length; i++) {
-          var itemElement = document.createElement("li"); //criação de uma linha
-          var linkElement = document.createElement("a"); //link
-          var linkAttribute = document.createAttribute("href"); //href
+        for (let i = 0; i < response.data.length; i++) {
+          let itemElement = document.createElement("li"); //criação de uma linha
+          let linkElement = document.createElement("a"); //link
+          let linkAttribute = document.createAttribute("href"); //href
 
           linkAttribute.value = response.data[i].html_url; //atribui a URL dos repositorios a cada href
           linkElement.setAttributeNode(linkAttribute); //coloca os href dentro do link
@@ -40,7 +51,6 @@ const btAdd = document
         alert(
           `Erro na requisição! \nUsuário ${github_username.value} não encontrado!`
         );
-        // console.log("Erro na requisição");
 
         clearInput();
       });
@@ -56,12 +66,12 @@ const btClear = document
     if (lines) {
       clearLines();
     } else {
-      alert("Nenhuma linha encontrada para ser apagada");
+      alert("Nenhum repositório encontrado para ser apagado");
     }
 
     // Verifica se o input está vazio
     if (github_username.value === "") {
-      alert("Nenhum usuário a ser apagado do input");
+      alert("Não foi encontrado nada digitado no campo");
     } else {
       clearInput();
     }
