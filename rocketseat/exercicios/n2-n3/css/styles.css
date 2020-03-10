@@ -1,6 +1,21 @@
+h1 {
+  display: inline;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
 h1,
 div#main {
   text-align: center;
+}
+
+a img#logo {
+  display: inline;
+  margin-left: 10px;
+}
+
+div.form {
+  margin-top: 15px;
 }
 
 input#user {
