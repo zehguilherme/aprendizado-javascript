@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="https://github.githubassets.com/favicon.ico" type="image/x-icon">
     <title>Exercício 2 e 3</title>
 </head>
 
@@ -12,14 +13,21 @@
     <div id="main">
         <h1>Lista de repositórios do Github</h1>
 
-        <input type="text" name="user" id="user" placeholder="Digite seu usuário do Github">
+        <a href="https://github.com" target="blank">
+            <img id="logo" src="https://github.githubassets.com/favicon.ico" alt="Ícone do Github">
+        </a>
 
-        <button class="add">Adicionar</button>
-        <button class="clear">Limpar</button>
+        <div class="form">
+            <input type="text" name="user" id="user" placeholder="Digite seu usuário do Github" autocomplete="off">
 
-        <ul class="list"></ul>
+            <button class="add">Adicionar</button>
+            <button class="clear">Limpar</button>
+
+            <ul class="list"></ul>
+        </div>
+
+
     </div>
-
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/main.js"></script>
