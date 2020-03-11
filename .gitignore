@@ -93,3 +93,6 @@ Thumbs.db
 
 # Folders
 .vscode
+
+package.json
+package-lock.json
