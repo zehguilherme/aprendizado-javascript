@@ -1,0 +1,14 @@
+- Babel: converte o código javascript de uma versão específica (ecmascript), para que seja intepretado e executado corretamente em todos os navegadores(com diferentes versões de ecmascript).
+
+- Webpack: - servidor para que se tenha a funcionalidade de live reload (por exemplo)
+           - usar babel para converter código entre as versões ecmascript
+
+- Arrow functions
+
+- Desestruturação: forma de recuperar propriedades de dentro de um objeto e array de forma mais fácil
+
+- Rest/spread: manipular as propriedades e informações dentro de objetos e arrays (duplicar conteúdo, passar de um lugar para outro sem manter referência, etc)
+
+- Import/export: importar e exportar funcionalidades de um .js para outro
+
+- Async/await: fornece una API nova para trabalhar com programação assíncrona
