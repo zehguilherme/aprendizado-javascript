@@ -54,6 +54,9 @@ const btAdd = document
       .catch(() => {
         alert('Erro na requisição!')
 
+        document.querySelector('ul.list').removeChild(loadingElement) // remove "Carregando" ao entrar no response
+        document.querySelector('div.form').removeChild(brElement)
+
         clearInput()
       })
   })
