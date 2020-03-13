@@ -9,6 +9,21 @@
 
 - Rest/spread: manipular as propriedades e informações dentro de objetos e arrays (duplicar conteúdo, passar de um lugar para outro sem manter referência, etc)
 
+      - Rest: pega o resto das propriedades (desestruturação ou passagem de parâmetros)
+      - Spread: repassa as informações de algum objeto ou array para outra estrutura de dados
+
+
+- Template literals: forma de incluir variáveis dentro de strings
+
+
 - Import/export: importar e exportar funcionalidades de um .js para outro
 
 - Async/await: fornece una API nova para trabalhar com programação assíncrona
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+- Array: - Map: percorrer cada item/index (posição de cada item) de um array e executar alguma coisa que colocarmos dentro
+         - Reduce: consumir todo o vetor e transformar em uma única informação(variável, geralmente um número)
+         - Filter: filtra determinadas informaçõs
+         - Find: verificar se existe alguma informação dentro do array ou caso queira encontrar essa informação dentro dele
