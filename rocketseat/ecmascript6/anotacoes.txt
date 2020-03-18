@@ -27,3 +27,8 @@
          - Reduce: consumir todo o vetor e transformar em uma única informação(variável, geralmente um número)
          - Filter: filtra determinadas informaçõs
          - Find: verificar se existe alguma informação dentro do array ou caso queira encontrar essa informação dentro dele
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+Pastas:
+        - src: fica todo o código js usado na aplicação
